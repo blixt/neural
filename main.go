@@ -164,7 +164,7 @@ func main() {
 			pop[i] = *pop[1].Copy().(*ScoredLayer)
 		}
 		for i := 25; i < 30; i++ {
-			pop[i] = *pop[1].Copy().(*ScoredLayer)
+			pop[i] = *pop[2].Copy().(*ScoredLayer)
 		}
 		// Remaining bottom dies.
 		for i := 30; i < len(pop); i++ {
