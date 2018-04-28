@@ -21,7 +21,7 @@ type Node struct {
 // A single connection between two nodes in two adjacent layers.
 type Edge struct {
 	Index    int
-	Xor, And byte
+	And, Xor byte
 }
 
 // A layer that is inferred from the previous layer ("left").
@@ -47,7 +47,7 @@ func (l InferredLayer) GetValues() []byte {
 	v := make([]byte, l.Size())
 	for i, node := range l.Nodes {
 		for _, input := range node.Inputs {
-			v[i] ^= (lv[input.Index] ^ input.Xor) & input.And
+			v[i] ^= lv[input.Index]&input.And ^ input.Xor
 		}
 	}
 	return v
