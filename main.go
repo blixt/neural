@@ -123,7 +123,7 @@ func main() {
 	}
 
 	pop := []ScoredLayer{}
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 200; i++ {
 		pop = append(pop, ScoredLayer{newNetwork(), 0})
 	}
 
@@ -133,7 +133,7 @@ func main() {
 			pop[i].Score = 0
 		}
 
-		for i := 0; i < 50; i++ {
+		for i := 0; i < 100; i++ {
 			// Prepare environment and input.
 			var n int
 			for i := range env {
@@ -146,10 +146,9 @@ func main() {
 			}
 			copy(in, env)
 
-			for i, p := range pop {
-				p.Mutate(10000)
+			for j, p := range pop {
 				values := p.GetValues()
-				pop[i].Score += Step(in, values, env)
+				pop[j].Score += Step(in, values, env)
 			}
 		}
 
@@ -158,24 +157,30 @@ func main() {
 			return pop[i].Score > pop[j].Score
 		})
 
+		fmt.Printf("[%10d]", pop[0].Score)
+		for _, v := range pop[0].GetValues() {
+			fmt.Printf(" %3d", v)
+		}
+		fmt.Println()
+
 		// 10 copies of the top network.
 		for i := 10; i < 20; i++ {
 			pop[i] = *pop[0].Copy().(*ScoredLayer)
+			pop[i].Mutate(5000)
 		}
 		// 5 copies of 2nd and 3rd.
 		for i := 20; i < 25; i++ {
 			pop[i] = *pop[1].Copy().(*ScoredLayer)
+			pop[i].Mutate(1000)
 		}
 		for i := 25; i < 30; i++ {
 			pop[i] = *pop[2].Copy().(*ScoredLayer)
+			pop[i].Mutate(500)
 		}
 		// Remaining bottom dies.
 		for i := 30; i < len(pop); i++ {
 			pop[i] = ScoredLayer{newNetwork(), 0}
 		}
-
-		fmt.Println(pop[0].Score)
-		fmt.Println(pop[0].GetValues())
 	}
 }
 
