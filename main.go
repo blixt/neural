@@ -115,10 +115,11 @@ func main() {
 	}
 
 	newNetwork := func() *InferredLayer {
-		l1 := NewFullyConnectedLayer(in, 18)
-		l2 := NewFullyConnectedLayer(l1, 18)
-		l3 := NewFullyConnectedLayer(l2, 18)
-		return NewFullyConnectedLayer(l3, 9)
+		var l Layer = in
+		for i := 0; i < 10; i++ {
+			l = NewFullyConnectedLayer(l, 9)
+		}
+		return NewFullyConnectedLayer(l, 9)
 	}
 
 	pop := []ScoredLayer{}
