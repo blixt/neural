@@ -214,26 +214,24 @@ func Step(env1, out, env2 []byte) int {
 	score := 0
 	zeroes := 0
 	for i, n := range out {
-		s := (255 - int(n))
-		score += s*s - 1
 		if n == 0 {
 			zeroes++
 		} else if n == 1 {
 			if move != -1 {
 				// illegal move - only one per turn
-				score -= 3
+				score -= 10
 				continue
 			}
 			move = i
-			score += 749
+			score += 100
 		} else {
-			score -= int(n)
+			score -= 5 + int(n)
 		}
 	}
-	score += zeroes * 14
+	score += zeroes * 7
 	if zeroes == 8 && move != -1 && env1[move] == 0 {
 		env2[move] = 1
-		score += 234567
+		score += 100
 	}
-	return score
+	return score + rand.Intn(10)
 }
