@@ -53,10 +53,10 @@ func (l InferredLayer) GetValues() []byte {
 	return v
 }
 
-func (l *InferredLayer) Mutate() {
+func (l *InferredLayer) Mutate(rarity int) {
 	for i := range l.Nodes {
 		for j := range l.Nodes[i].Inputs {
-			if rand.Int31() > 500000 {
+			if rand.Intn(rarity) == 0 {
 				continue
 			}
 			var r uint64
@@ -71,7 +71,7 @@ func (l *InferredLayer) Mutate() {
 		}
 	}
 	if il, ok := l.Left.(*InferredLayer); ok {
-		il.Mutate()
+		il.Mutate(rarity)
 	}
 }
 
@@ -146,7 +146,7 @@ func main() {
 			copy(in, env)
 
 			for i, p := range pop {
-				p.Mutate()
+				p.Mutate(10000)
 				values := p.GetValues()
 				pop[i].Score += Step(in, values, env)
 			}
