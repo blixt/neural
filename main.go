@@ -61,11 +61,13 @@ func (l *InferredLayer) Mutate() {
 			}
 			var r uint64
 			r = rand.Uint64()
-			l.Nodes[i].Inputs[j].And &= byte((r >> 56) | (r >> 48) | (r >> 40) | (r >> 32) | (r >> 24) | (r >> 16) | (r >> 8) | r)
 			l.Nodes[i].Inputs[j].And |= byte((r >> 56) & (r >> 48) & (r >> 40) & (r >> 32) & (r >> 24) & (r >> 16) & (r >> 8) & r)
 			r = rand.Uint64()
-			l.Nodes[i].Inputs[j].Xor &= byte((r >> 56) | (r >> 48) | (r >> 40) | (r >> 32) | (r >> 24) | (r >> 16) | (r >> 8) | r)
+			l.Nodes[i].Inputs[j].And &= byte((r >> 56) | (r >> 48) | (r >> 40) | (r >> 32) | (r >> 24) | (r >> 16) | (r >> 8) | r)
+			r = rand.Uint64()
 			l.Nodes[i].Inputs[j].Xor |= byte((r >> 56) & (r >> 48) & (r >> 40) & (r >> 32) & (r >> 24) & (r >> 16) & (r >> 8) & r)
+			r = rand.Uint64()
+			l.Nodes[i].Inputs[j].Xor &= byte((r >> 56) | (r >> 48) | (r >> 40) | (r >> 32) | (r >> 24) | (r >> 16) | (r >> 8) | r)
 		}
 	}
 	if il, ok := l.Left.(*InferredLayer); ok {
